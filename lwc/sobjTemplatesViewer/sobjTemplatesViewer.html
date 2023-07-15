@@ -1,0 +1,47 @@
+<template>
+    <div class="noncontainer">
+        <div class="slds-form-element slds-var-p-around_small">
+            <div class="slds-form-element" role="group" aria-labelledby="picklist-group-label">
+                <span id="picklist-group-label" class="slds-form-element__label slds-form-element__legend">Selecione os campos</span>
+
+                <div class="slds-form-element__control">
+                    <div class="slds-dueling-list">
+                        <div class="slds-assistive-text" id="drag-live-region" aria-live="assertive"></div>
+
+                        <!-- AVAILABLE FIELDS -->
+                        <div class="slds-dueling-list__column slds-dueling-list__column_responsive">
+                            <span class="slds-form-element__label" id="label-105">Available Fields</span>
+                            <div class="slds-dueling-list__options">
+                                <ul aria-describedby="option-drag-label" aria-labelledby="label-105" aria-multiselectable="true" class="slds-listbox slds-listbox_vertical" role="listbox">
+                                   <template for:each={available_fields} for:item="item" for:index="index">
+                                        <li role="presentation" class="slds-listbox__item" key={item.apiName} onclick={handleClick} data-index={index} data-list="available"><div class="slds-listbox__option slds-listbox__option_plain slds-media slds-media_small slds-media_inline" aria-selected={item.selected} draggable="true" role="option" tabindex="-1"><span class="slds-media__body"><span class="slds-truncate" title={item.apiName}>{item.label}</span></span></div></li>
+                                   </template>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- CONTROL BUTTONS -->
+                        <div class="slds-dueling-list__column" style="margin: 0;">
+                            <lightning-button-icon icon-name="utility:chevronright" size="x_small" title="Move Selection to Selected Fields" onclick={moveToSelected}></lightning-button-icon>
+                            <lightning-button-icon icon-name="utility:chevronleft" size="x_small" title="Move Selection to Available Fields" onclick={moveToAvailable}></lightning-button-icon>
+                        </div>
+
+                        <!-- SELECTED FIELDS -->
+                        <div class="slds-dueling-list__column slds-dueling-list__column_responsive">
+                            <span class="slds-form-element__label" id="label-106">Selected Fields</span>
+                            <div class="slds-dueling-list__options">
+                                <ul aria-describedby="option-drag-label" aria-labelledby="label-106" aria-multiselectable="true" class="slds-listbox slds-listbox_vertical" role="listbox">
+                                    <template for:each={selected_fields} for:item="item" for:index="index">
+                                        <li role="presentation" class="slds-listbox__item" key={item.apiName} onclick={handleClick} data-index={index} data-list="selected"><div class="slds-listbox__option slds-listbox__option_plain slds-media slds-media_small slds-media_inline" aria-selected={item.selected} draggable="true" role="option" tabindex="-1"><span class="slds-media__body"><span class="slds-truncate" title={item.apiName}>{item.label}</span></span></div></li>
+                                   </template>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <a class="slds-button slds-button_brand slds-var-m-top_large" href="#" onclick={callToSave}>Salvar</a>
+            </div>
+        </div>
+    </div>
+</template>

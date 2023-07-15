@@ -1,0 +1,24 @@
+<template>
+    <div class="container">
+        <div class="slds-form-element slds-var-p-around_small">
+            <!-- Título -->
+            <div class="slds-form-element__label slds-text-heading_small">Criar um novo template de importação</div><br>
+
+            <!-- Início do Form -->
+            <label class="slds-form-element__label" for="select-01">
+                <abbr class="slds-required" title="">* </abbr>Escolha um objeto
+            </label>
+            <div data-id="select-container" class="slds-form-element__control"></div>
+
+            <!-- Loading -->
+            <div if:true={loading} class="loading">
+                <lightning-spinner alternative-text="loading" size="small"></lightning-spinner>
+            </div>
+
+            <!-- Gerar os Campos do Objeto -->
+            <div if:false={loading}>
+                <button onclick={handleSelected} class="slds-m-around_x-small slds-align_absolute-center slds-button slds-button_icon">Mostrar campos disponíveis</button>
+            </div>
+        </div>
+    </div>
+</template>
