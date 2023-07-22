@@ -29,6 +29,23 @@ export default class SobjTemplatesViewer extends LightningElement
     formatAvailableFields()
     {
         this.available_fields = this.objFields.map((v) => ({label : v.fieldLabel, apiName : v.fieldApi, selected : false}));
+        
+        this.available_fields.sort(this.sortFieldByLabel);
+    }
+
+    sortFieldByLabel(a, b)
+    {
+        let listLabel = [a.label, b.label];
+        listLabel.sort();
+
+        if(listLabel[0] == a.label)
+        {
+            return -1;
+        }
+        else
+        {
+            return 1;
+        }
     }
 
     handleClick(event)
@@ -66,9 +83,9 @@ export default class SobjTemplatesViewer extends LightningElement
         let indexToRemove = [];
 
         this.available_fields.forEach((val, index) => {
-            if (val.selected) 
+            if (val.selected == "true") 
             { 
-                val.selected = false
+                val.selected = "false";
 
                 this.selected_fields.push(val);
                 indexToRemove.push(index);
@@ -79,6 +96,8 @@ export default class SobjTemplatesViewer extends LightningElement
         {
             this.available_fields.splice(indexToRemove[i]-i, 1);
         }
+
+        this.selected_fields.sort(this.sortFieldByLabel);
     }
 
     moveToAvailable()
@@ -86,9 +105,9 @@ export default class SobjTemplatesViewer extends LightningElement
         let indexToRemove = [];
 
         this.selected_fields.forEach((val, index) => {
-            if (val.selected) 
+            if (val.selected == "true") 
             { 
-                val.selected = false
+                val.selected = "false";
 
                 this.available_fields.push(val);
                 indexToRemove.push(index);
@@ -99,6 +118,8 @@ export default class SobjTemplatesViewer extends LightningElement
         {
             this.selected_fields.splice(indexToRemove[i]-i, 1);
         }
+
+        this.available_fields.sort(this.sortFieldByLabel);
     }
 
     callToSave()
