@@ -29,7 +29,7 @@ public virtual without sharing class SOBJ_TemplatesAdapter
     {
         public override ClassMethod callMethod(Map<String, Object> methodParams)
         {
-            instanceSOBJ_TemplatesService.generateObjectTemplate((String) methodParams.get('arrangeJSON'));
+            instanceSOBJ_TemplatesService.generateObjectTemplate((String) methodParams.get('name'), (String) methodParams.get('arrangeJSON'));
             return this;
         }
     }

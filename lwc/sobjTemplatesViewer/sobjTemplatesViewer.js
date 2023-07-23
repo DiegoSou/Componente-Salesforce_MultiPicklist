@@ -1,24 +1,34 @@
 import { api, track, LightningElement } from 'lwc';
-import callServiceMethod from '@salesforce/apex/SOBJ_TemplatesAdapter.callServiceMethod';
 
 export default class SobjTemplatesViewer extends LightningElement 
 {
-    targetObj; // Objeto do Template
-    objFields; // Campos: label, apiName, selected
+    targetObj; // objeto do template
+    objFields; // campos: label, apiName, selected
+
+    @track isVisible = false;
 
     @track available_fields = [];
     @track selected_fields = [];
 
-    loading = true;
+    // public function - retorna o objeto selecionado
+    @api getObj() { return this.targetObj; }
 
+    // public function - retorna os campos selecionados
+    @api getFieldsSaved() { return this.selected_fields; }
+
+    // public function - seta o objeto alvo
     @api setObj (value) { this.targetObj = value; }
+
+    // public function - seta os campos disponíveis
     @api setFields (value) { this.objFields = value; }
 
+    // public function - seta visibilidade do componente
+    @api setVisible (bool) { this.isVisible = bool; }
+
+    // public function - carrega o componente
     @api loadContainer()
     {
-        if(this.template.querySelector('div[class="noncontainer"]')) 
-            this.template.querySelector('div[class="noncontainer"]').classList.remove('noncontainer');
-
+        if(this.isVisible === false) this.isVisible = true;
         
         this.available_fields = [];
         this.selected_fields = [];
@@ -122,16 +132,5 @@ export default class SobjTemplatesViewer extends LightningElement
         this.available_fields.sort(this.sortFieldByLabel);
     }
 
-    callToSave()
-    {
-        if(this.selected_fields.length > 0)
-        {
-            callServiceMethod({
-                methodName : 'generateImportTemplate',
-                methodParams : { arrangeJSON : JSON.stringify({ objSelected : this.targetObj, fieldsSelected : this.selected_fields }) }
-            })
-            .then(() => this.loadContainer())
-            .catch((error) => console.log(JSON.stringify(error)))
-        }
-    }
+    generateReview() { this.isVisible = false; this.dispatchEvent(new CustomEvent('selectedfields')); }
 }

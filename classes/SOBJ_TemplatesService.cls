@@ -2,7 +2,8 @@ public without sharing class SOBJ_TemplatesService implements SOBJ_ITemplatesSer
 {
     public class SOBJ_TemplatesServiceException extends Exception {}
 
-    public final Set<String> setupprefixes = new Set<String>{'npe01','npo02','npsp','Id','OwnerId','CreatedDate'};
+    public final Set<String> setupprefixes = new Set<String>{'npe01','npo02','npsp'};
+    public final Set<String> setupfields = new Set<String>{'Id', 'OwnerId','CreatedDate', 'LastModifiedDate', 'LastViewedDate','LastModifiedById', 'LastReferencedDate', 'LastActivityDate'};
     
     public String orgObjects()
     {
@@ -19,8 +20,10 @@ public without sharing class SOBJ_TemplatesService implements SOBJ_ITemplatesSer
 
             String fieldLabel = st.getDescribe().getLabel();
             String fieldApi = st.getDescribe().getLocalName();
-            
+
             // Retira os campos de configuração
+            if(setupfields.contains(fieldApi)) { continue; }
+            
             for(String pfx : setupprefixes) { if(fieldApi.startsWith(pfx)) {isSetupField = true; break;} }
             if(isSetupField) { continue; }
 
@@ -30,7 +33,7 @@ public without sharing class SOBJ_TemplatesService implements SOBJ_ITemplatesSer
         return JSON.serialize(listFieldWrapped);
     }
 
-    public void generateObjectTemplate(String arrangeJSON) 
+    public void generateObjectTemplate(String nameTemplate, String arrangeJSON) 
     {
         try
         {
@@ -42,16 +45,19 @@ public without sharing class SOBJ_TemplatesService implements SOBJ_ITemplatesSer
             ImportTemplateDomain templateDomain = (ImportTemplateDomain) C3C_DIContainer_Injector.newInstance('ImportTemplateDomain');
 
             templateDomain
-            .setTemplateName(objTemplate.objSelected + ' - ' + 'Template de Importação')
+            .setTemplateName(nameTemplate)
             .setObjectAPI(objTemplate.objSelected);
             
             System.debug(templateDomain);
             domainDMLInstance.insertDomain(templateDomain);
 
             // COLUMN DOMAIN
+            if(objTemplate.fieldsSelected == null) return;
+
             List<ColumnImportTemplate__c> listColumnDomain = new List<ColumnImportTemplate__c>();
             for(SOBJ_TemplatesFieldSelectedWrapper fieldSelected : objTemplate.fieldsSelected)
             {
+                if(!fieldSelected.selected) { continue; }
                 ColumnImportTemplateDomain columnDomain = (ColumnImportTemplateDomain) C3C_DIContainer_Injector.newInstance('ColumnImportTemplateDomain');
 
                 columnDomain

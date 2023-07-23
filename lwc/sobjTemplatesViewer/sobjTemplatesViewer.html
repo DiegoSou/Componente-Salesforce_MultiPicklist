@@ -1,5 +1,5 @@
 <template>
-    <div class="noncontainer">
+    <div if:true={isVisible}>
         <div class="slds-form-element slds-var-p-around_small">
             <div class="slds-form-element" role="group" aria-labelledby="picklist-group-label">
                 <span id="picklist-group-label" class="slds-form-element__label slds-form-element__legend">Selecione os campos</span>
@@ -40,7 +40,7 @@
                     </div>
                 </div>
 
-                <a class="slds-button slds-button_brand slds-var-m-top_large" href="#" onclick={callToSave}>Salvar</a>
+                <a class="slds-button slds-button_brand slds-var-m-top_large" onclick={generateReview}>Avançar</a>
             </div>
         </div>
     </div>

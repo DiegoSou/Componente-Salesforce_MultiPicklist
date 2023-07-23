@@ -1,0 +1,19 @@
+<template>
+    <div if:true={isVisible}>
+        <div class="slds-var-p-around_small">
+            
+            <!-- Template Name -->
+            <div data-id="inputTemplateName"><div class="slds-form-element"><label class="slds-form-element__label"><abbr class="slds-required" title="obrigatório">* </abbr>O template se chama</label><div class="slds-form-element__control"><input type="text" placeholder="Nome do template" required="" class="slds-input" title=""/></div></div></div>
+
+            <!-- Datatable -->
+            <div class="slds-var-p-around_small">
+                <lightning-datatable key-field="apiName" data={data} columns={columns} suppress-bottom-bar hide-checkbox-column></lightning-datatable>
+            </div>
+
+            <!-- CONTROL BUTTONS -->
+            <a class="slds-button slds-button_brand slds-var-m-top_large" onclick={callToSave}>Salvar</a>
+            <a class="slds-button slds-button_outline-brand slds-var-m-top_large" onclick={backToView}>Voltar</a>
+            
+        </div>
+    </div>
+</template>
